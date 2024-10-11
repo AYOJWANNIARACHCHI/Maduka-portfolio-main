@@ -4,38 +4,37 @@ const useThemeSwitcher = () => {
   const preferDarkQuery = "(prefer-color-scheme:dark)";
   const [mode, setMode] = useState("");
 
-  // useEffect(() => {
+  useEffect(() => {
+    const mediaQuery = window.matchMedia(preferDarkQuery);
+    const usePref = window.localStorage.getItem("theme");
+    const check = null;
 
-  //     const mediaQuery= window.matchMedia(preferDarkQuery);
-  //     const usePref = window.localStorage.getItem("theme");
+    const handleChange = () => {
+      if (usePref) {
+        let check = usePref === "dark" ? "dark" : "light";
+        setMode(check);
+        if (check === "dark") {
+          document.documentElement.classList.add("dark");
+        } else {
+          document.documentElement.classList.remove("dark");
+        }
+      } else {
+        let change = mediaQuery.matches ? "dark" : "light";
 
-  //     const handleChange = () =>{
-  //         if(usePref){
-  //             let check = usePref === "dark" ? "dark" : "light";
-  //             setMode(check);
-  //             if(check==="dark"){
-  //                 document.documentElement.classList.add("dark");
-  //             }else{
-  //                 document.documentElement.classList.remove("dark");
-  //             }
-  //         }else{
-  //             let change= mediaQuery.matches ? "dark" :"light"
+        if (check === "dark") {
+          document.documentElement.classList.add("dark");
+        } else {
+          document.documentElement.classList.remove("dark");
+        }
+      }
+    };
 
-  //             if(check==="dark"){
-  //                 document.documentElement.classList.add("dark");
-  //             }else{
-  //                 document.documentElement.classList.remove("dark");
-  //             }
-  //         }
-  //     }
+    handleChange();
 
-  //     handleChange();
+    mediaQuery.addEventListener("change", handleChange);
 
-  //     mediaQuery.addEventListener("change",handleChange)
-
-  //     return  () => mediaQuery.removeEventListener("change",handleChange)
-
-  // }, [])
+    return () => mediaQuery.removeEventListener("change", handleChange);
+  }, []);
 
   useEffect(() => {
     if (mode === "dark") {
